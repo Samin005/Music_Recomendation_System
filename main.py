@@ -1,50 +1,63 @@
 import pandas
-from sklearn.tree import DecisionTreeClassifier
+# from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.externals import joblib
 
 
-def check_model_accuracy():
+music_datafile_name = 'data/Music Data.csv'
+music_recommendation_model_name = 'Decision_Tree_Model'
+
+data_frame = pandas.read_csv(music_datafile_name)
+
+# features = music_data_frame.drop(['genre'])
+# all but last column as the features
+features = data_frame.iloc[:, 0:-1]
+
+# label = music_data_frame['genre']
+# last column as the label
+labels = data_frame.iloc[:, -1]
+
+
+def train_model(model):
+    model.fit(features, labels)
+
+
+def save_model(model, model_name):
+    joblib.dump(model, f'models/{model_name}.joblib')
+
+
+def load_model(model_name):
+    return joblib.load(f'models/{model_name}.joblib')
+
+
+def check_model_accuracy(model):
     # splitting the data, 80% used for training and 20% used for testing
     features_for_training, features_for_testing, labels_for_training, labels_for_testing = train_test_split(features,
-                                                                                                            label,
+                                                                                                            labels,
                                                                                                             test_size=0.2)
 
     # using the 80% to train model
-    decision_tree_model.fit(features_for_training, labels_for_training)
+    model.fit(features_for_training, labels_for_training)
 
     # using the 20% for testing/predictions
-    model_predictions = decision_tree_model.predict(features_for_testing)
+    model_predictions = model.predict(features_for_testing)
     model_accuracy = accuracy_score(labels_for_testing, model_predictions) * 100
     return model_accuracy
 
 
-music_data_frame = pandas.read_csv('data/Music Data.csv')
+# # To train and save initial data model
+# decision_tree_model = DecisionTreeClassifier()
+# train_model(decision_tree_model)
+# save_model(decision_tree_model, music_recommendation_model_name)
 
-# features = music_data_frame.drop(['genre'])
-# label = music_data_frame['genre']
+# Load the trained model
+decision_tree_model = load_model(music_recommendation_model_name)
 
-# all but last column as the features
-features = music_data_frame.iloc[:, 0:-1]
+# # To check accuracy of the model
+# print(f'Model Accuracy: {check_model_accuracy(decision_tree_model)}%')
 
-# last column as the label
-label = music_data_frame.iloc[:, -1]
-
-decision_tree_model = DecisionTreeClassifier()
-
-print(f'Model Accuracy = {check_model_accuracy()}%')
-
-# Training the model with the entire dataset
-decision_tree_model.fit(features, label)
-
-# Test with sample inputs
-
-# input_set_1 = [21, 1]
-# input_set_2 = [22, 0]
-#
-# print(decision_tree_model.predict([input_set_1, input_set_2]))
-
-# take input from the user
+# take input from the user and check model predictions
 play_again = 'yes'
 while 'y' in play_again:
     user_age = input('Please enter age: ')
