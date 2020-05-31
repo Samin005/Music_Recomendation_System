@@ -1,5 +1,23 @@
 import pandas
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+
+def check_model_accuracy():
+    # splitting the data, 80% used for training and 20% used for testing
+    features_for_training, features_for_testing, labels_for_training, labels_for_testing = train_test_split(features,
+                                                                                                            label,
+                                                                                                            test_size=0.2)
+
+    # using the 80% to train model
+    decision_tree_model.fit(features_for_training, labels_for_training)
+
+    # using the 20% for testing/predictions
+    model_predictions = decision_tree_model.predict(features_for_testing)
+    model_accuracy = accuracy_score(labels_for_testing, model_predictions) * 100
+    return model_accuracy
+
 
 music_data_frame = pandas.read_csv('data/Music Data.csv')
 
@@ -13,6 +31,10 @@ features = music_data_frame.iloc[:, 0:-1]
 label = music_data_frame.iloc[:, -1]
 
 decision_tree_model = DecisionTreeClassifier()
+
+print(f'Model Accuracy = {check_model_accuracy()}%')
+
+# Training the model with the entire dataset
 decision_tree_model.fit(features, label)
 
 # Test with sample inputs
