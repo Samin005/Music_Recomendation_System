@@ -2,7 +2,7 @@ import pandas
 # from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from sklearn.externals import joblib
+import joblib
 
 
 music_datafile_name = 'data/Music Data.csv'
