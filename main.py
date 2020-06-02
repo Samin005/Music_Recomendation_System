@@ -8,15 +8,15 @@ import joblib
 music_datafile_name = 'data/Music Data.csv'
 music_recommendation_model_name = 'Decision_Tree_Model'
 
-data_frame = pandas.read_csv(music_datafile_name)
+music_data_frame = pandas.read_csv(music_datafile_name)
 
 # features = music_data_frame.drop(['genre'])
 # all but last column as the features
-features = data_frame.iloc[:, 0:-1]
+features = music_data_frame.iloc[:, 0:-1]
 
 # label = music_data_frame['genre']
 # last column as the label
-labels = data_frame.iloc[:, -1]
+labels = music_data_frame.iloc[:, -1]
 
 
 def train_model(model):
